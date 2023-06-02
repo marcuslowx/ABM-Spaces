@@ -1,0 +1,457 @@
+---
+title: "Some model output analysis rendered using RMarkdown"
+author: "Marcus Low"
+date: "March 2022"
+output:
+    html_document:  
+        toc: false
+        number_sections: false
+        fig_height: 7
+        fig_width: 12
+theme: darkly
+--- 
+
+```{R load_the_basics, include=FALSE}
+a <- read.csv("a.csv")
+b <- read.csv("b.csv")
+c <- read.csv("c.csv")
+d <- read.csv("d.csv")
+e <- read.csv("e.csv")
+library(dplyr)
+library(ggplot2)
+library(htmlTable)
+f <- rbind(a, b)
+g <- rbind(f, c)
+h <- rbind(g, d) 
+i <- rbind(h, e) 
+runs_count <- length(a$Dead)
+
+years_count = (max(a$Time_step) +1)/52
+
+a_total_infections = c()
+a_pos = c()
+b_total_infections = c()
+b_pos = c()
+c_total_infections = c()
+c_pos = c()
+d_total_infections = c()
+d_pos = c()
+e_total_infections = c()
+e_pos = c()
+ 
+for (x in 1:years_count) {
+  a_filter <- dplyr::filter(a, Time_step == (x*52)-1)
+  b_filter <- dplyr::filter(b, Time_step == (x*52)-1)
+  c_filter <- dplyr::filter(c, Time_step == (x*52)-1)
+  d_filter <- dplyr::filter(d, Time_step == (x*52)-1)
+  e_filter <- dplyr::filter(e, Time_step == (x*52)-1)
+
+  new_val_a <- mean(a_filter$total_active_cases)
+  new_pos_a <- mean(a_filter$Positive)
+  a_total_infections = append(a_total_infections, new_val_a) 
+  a_pos = append(a_pos, new_pos_a)
+
+  new_val_b <- mean(b_filter$total_active_cases)
+  new_pos_b <- mean(b_filter$Positive)
+  b_total_infections = append(b_total_infections, new_val_b) 
+  b_pos = append(b_pos, new_pos_b)
+
+  new_val_c <- mean(c_filter$total_active_cases)
+  new_pos_c <- mean(c_filter$Positive)
+  c_total_infections = append(c_total_infections, new_val_c) 
+  c_pos = append(c_pos, new_pos_c)
+
+  new_val_d <- mean(d_filter$total_active_cases)
+  new_pos_d <- mean(d_filter$Positive)
+  d_total_infections = append(d_total_infections, new_val_d) 
+  d_pos = append(d_pos, new_pos_d)
+
+  new_val_e <- mean(e_filter$total_active_cases)
+  new_pos_e <- mean(e_filter$Positive)
+  e_total_infections = append(e_total_infections, new_val_e) 
+  e_pos = append(e_pos, new_pos_e) 
+}
+
+a_mod =c()
+a_mod = append(a_mod, a_total_infections[1] * 5)
+a_mod_pos =c()
+a_mod_pos = append(a_mod_pos, a_pos[1] * 5)
+
+b_mod =c()
+b_mod = append(b_mod, b_total_infections[1] * 5)
+b_mod_pos =c()
+b_mod_pos = append(b_mod_pos, b_pos[1] * 5)
+
+c_mod =c()
+c_mod = append(c_mod, c_total_infections[1] * 5)
+c_mod_pos =c()
+c_mod_pos = append(c_mod_pos, c_pos[1] * 5)
+
+d_mod =c()
+d_mod = append(d_mod, d_total_infections[1] * 5)
+d_mod_pos =c()
+d_mod_pos = append(d_mod_pos, d_pos[1] * 5)
+
+e_mod =c()
+e_mod = append(e_mod, e_total_infections[1] * 5)
+e_mod_pos =c()
+e_mod_pos = append(e_mod_pos, e_pos[1] * 5)
+
+for (y in 2:years_count) {
+  a_mod = append(a_mod, 5 * (a_total_infections[y] - a_total_infections[y-1]))
+  a_mod_pos = append(a_mod_pos, 5 * (a_pos[y] - a_pos[y-1]))
+  b_mod = append(b_mod, 5 * (b_total_infections[y] - b_total_infections[y-1]))
+  b_mod_pos = append(b_mod_pos, 5 * (b_pos[y] - b_pos[y-1]))
+  c_mod = append(c_mod, 5 * (c_total_infections[y] - c_total_infections[y-1]))
+  c_mod_pos = append(c_mod_pos, 5 * (c_pos[y] - c_pos[y-1]))
+  d_mod = append(d_mod, 5 * (d_total_infections[y] - d_total_infections[y-1]))
+  d_mod_pos = append(d_mod_pos, 5 * (d_pos[y] - d_pos[y-1]))
+  e_mod = append(e_mod, 5 * (e_total_infections[y] - e_total_infections[y-1]))
+  e_mod_pos = append(e_mod_pos, 5 * (e_pos[y] - e_pos[y-1]))
+}
+```
+
+# Analysis {.tabset .tabset-fade .tabset-pills}
+
+## The numbers
+The below is based on `r runs_count` runs of each of the five scenarios.
+
+Comparing key numbers from the five simulations:
+
+```{R numbers_table_compare, echo = FALSE}
+a_f <- dplyr::filter(a, Time_step == 519)
+b_f <- dplyr::filter(b, Time_step == 519)
+c_f <- dplyr::filter(c, Time_step == 519)
+d_f <- dplyr::filter(d, Time_step == 519)
+e_f <- dplyr::filter(e, Time_step == 519)
+
+a_filter <- dplyr::filter(a, Time_step == 519)  
+b_filter <- dplyr::filter(b, Time_step == 519)  
+c_filter <- dplyr::filter(c, Time_step == 519)  
+d_filter <- dplyr::filter(d, Time_step == 519)  
+e_filter <- dplyr::filter(e, Time_step == 519)  
+
+cases_a <- 0.5 * mean(a_filter$total_active_cases)
+cases_b <- 0.5 * mean(b_filter$total_active_cases)
+cases_c <- 0.5 * mean(c_filter$total_active_cases)
+cases_d <- 0.5 * mean(d_filter$total_active_cases)
+cases_e <- 0.5 * mean(e_filter$total_active_cases)
+
+detected_a <- 0.5 * mean(a_filter$Positive)
+detected_b <- 0.5 * mean(b_filter$Positive)
+detected_c <- 0.5 * mean(c_filter$Positive)
+detected_d <- 0.5 * mean(d_filter$Positive)
+detected_e <- 0.5 * mean(e_filter$Positive)
+
+rate_a <- mean(a_filter$Positive/a_filter$total_active_cases)
+rate_b <- mean(b_filter$Positive/b_filter$total_active_cases)
+rate_c <- mean(c_filter$Positive/c_filter$total_active_cases)
+rate_d <- mean(d_filter$Positive/d_filter$total_active_cases)
+rate_e <- mean(e_filter$Positive/e_filter$total_active_cases)
+
+k <- data.frame(
+"Scenario" = c("latentTB", "activeTB", "Deaths", "Peak_time", "cases100k", "detected100k", "case_detection_rate", "R0", "total_time_infectious", "total_time_active", "mean_time_infectious", "mean_time_active"),
+"standard" = c(mean(a_f$agents_ever_latent), mean(a_f$agents_ever_active), mean(a_f$Dead), mean(a_f$Peak_time), cases_a, detected_a, rate_a, mean(a_f$R0), mean(a_f$total_time_infectious), mean(a_f$total_time_active), mean(a_f$mean_time_infectious), mean(a_f$mean_time_active)),
+"cti" = c(mean(b_f$agents_ever_latent), mean(b_f$agents_ever_active), mean(b_f$Dead), mean(b_f$Peak_time), cases_b, detected_b, rate_b, mean(b_f$R0), mean(b_f$total_time_infectious), mean(b_f$total_time_active), mean(b_f$mean_time_infectious), mean(b_f$mean_time_active)),
+"x_ray" = c(mean(c_f$agents_ever_latent), mean(c_f$agents_ever_active), mean(c_f$Dead), mean(c_f$Peak_time), cases_c, detected_c, rate_c, mean(c_f$R0), mean(c_f$total_time_infectious), mean(c_f$total_time_active), mean(c_f$mean_time_infectious), mean(c_f$mean_time_active)),
+"tut" = c(mean(d_f$agents_ever_latent), mean(d_f$agents_ever_active), mean(d_f$Dead), mean(d_f$Peak_time), cases_d, detected_d, rate_d, mean(d_f$R0), mean(d_f$total_time_infectious), mean(d_f$total_time_active), mean(d_f$mean_time_infectious), mean(d_f$mean_time_active)),
+"ultra" = c(mean(e_f$agents_ever_latent), mean(e_f$agents_ever_active), mean(e_f$Dead), mean(e_f$Peak_time), cases_e, detected_e, rate_e, mean(e_f$R0), mean(e_f$total_time_infectious), mean(e_f$total_time_active), mean(e_f$mean_time_infectious), mean(e_f$mean_time_active)))
+k$ctiDstd <- k$cti / k$standard
+k$xrayDstd <- k$x_ray / k$standard
+k$tutDstd <- k$tut / k$standard
+k$ultraDstd <- k$ultra / k$standard
+htmlTable(k)
+
+iqr_cases <- 0.5 * unname(quantile(a_filter$total_active_cases))
+iqr_detected <- 0.5 * unname(quantile(a_filter$Positive))
+iqr_rate <- unname(quantile(a_filter$Positive/a_filter$total_active_cases)) 
+```
+
+Here are the mean and IQR calculations to be used in the article. The mean here is the mean of all years in all runs of the model's base scenario - same with the IQR. The sequence is is min, 25th, mean, 75th, max.
+
+Mean cases per 100k: 
+`r iqr_cases` 
+
+Mean detected per 100k: 
+`r iqr_detected` 
+
+Mean case detection rate: 
+`r iqr_rate`
+ 
+And below is a table with mean case detection over time in the five scenarios
+
+```{R cd_over_time, echo = FALSE}
+
+a_cd = a %>%
+group_by(Time_step) %>%
+summarise(cases = mean(total_active_cases), pos = mean(Positive))
+for (zebra in 10:2) {
+  a_cd$cases[zebra] <- a_cd$cases[zebra] -a_cd$cases[zebra-1]
+  a_cd$pos[zebra] <- a_cd$pos[zebra] - a_cd$pos[zebra-1]  
+}
+a_cd$case_det <- round(a_cd$pos/a_cd$cases, digit =3)
+
+b_cd = b %>%
+group_by(Time_step) %>%
+summarise(cases = mean(total_active_cases), pos = mean(Positive))
+for (zebra in 10:2) {
+  b_cd$cases[zebra] <- b_cd$cases[zebra] -b_cd$cases[zebra-1]
+  b_cd$pos[zebra] <- b_cd$pos[zebra] - b_cd$pos[zebra-1]  
+}
+b_cd$case_det <- round(b_cd$pos/b_cd$cases, digit =3)
+
+c_cd = c %>%
+group_by(Time_step) %>%
+summarise(cases = mean(total_active_cases), pos = mean(Positive))
+for (zebra in 10:2) {
+  c_cd$cases[zebra] <- c_cd$cases[zebra] -c_cd$cases[zebra-1]
+  c_cd$pos[zebra] <- c_cd$pos[zebra] - c_cd$pos[zebra-1]  
+}
+c_cd$case_det <- round(c_cd$pos/c_cd$cases, digit =3)
+
+d_cd = d %>%
+group_by(Time_step) %>%
+summarise(cases = mean(total_active_cases), pos = mean(Positive))
+for (zebra in 10:2) {
+  d_cd$cases[zebra] <- d_cd$cases[zebra] -d_cd$cases[zebra-1]
+  d_cd$pos[zebra] <- d_cd$pos[zebra] - d_cd$pos[zebra-1]  
+}
+d_cd$case_det <- round(d_cd$pos/d_cd$cases, digit =3)
+
+e_cd = e %>%
+group_by(Time_step) %>%
+summarise(cases = mean(total_active_cases), pos = mean(Positive))
+for (zebra in 10:2) {
+  e_cd$cases[zebra] <- e_cd$cases[zebra] -e_cd$cases[zebra-1]
+  e_cd$pos[zebra] <- e_cd$pos[zebra] - e_cd$pos[zebra-1]  
+}
+e_cd$case_det <- round(e_cd$pos/e_cd$cases, digit =3)
+
+cd_table <- data.frame(
+"year" = c(1:10),
+"Scenario1" = c(a_cd$case_det),
+"Scenario2" = c(b_cd$case_det),
+"Scenario3" = c(c_cd$case_det),
+"Scenario4" = c(d_cd$case_det),
+"Scenario5" = c(e_cd$case_det))
+
+htmlTable(cd_table)
+```
+
+And here is the same information on a graph.
+
+```{R case_detection_curves, echo = FALSE}
+ggplot(data = cd_table, mapping = aes(x = year)) +
+  geom_line(mapping = aes(y = Scenario1), color = "black", size= 1) +
+  geom_line(aes(y = Scenario2), color = "red", size =1) +
+  geom_line(aes(y = Scenario3), color = "orange", size =1) +
+  geom_line(aes(y = Scenario4), color = "green", size =1) +
+  geom_line(aes(y = Scenario5), color = "blue", size =1) +
+  labs(x = "Years", y = "Percent detected")  
+ggsave("case_detection.png")
+```
+
+## Some epidemiological curves
+
+This graph shows mean active TB cases per 100,000 by year. Different colours indicate the different scenarios.
+
+```{R epi_curves, echo = FALSE}
+curves <- data.frame("year" = c(1:years_count), 
+"Scenario1" = a_mod, 
+"Scenario2" = b_mod, 
+"Scenario3" = c_mod, 
+"Scenario4" = d_mod, 
+"Scenario5" = e_mod)
+
+write.csv(curves, "curves.csv", row.names=FALSE)
+
+ggplot(data = curves, mapping = aes(x = year)) +
+  geom_line(mapping = aes(y = Scenario1), color = "black", size= 1) +
+  geom_line(aes(y = Scenario2), color = "red", size =1) +
+  geom_line(aes(y = Scenario3), color = "orange", size =1) +
+  geom_line(aes(y = Scenario4), color = "green", size =1) +
+  geom_line(aes(y = Scenario5), color = "blue", size =1) +
+  labs(x = "Years", y = "Active cases/100k")  
+ggsave("curves.png")
+```
+
+
+This table shows mean cases per 100,000 per year..
+```{R curves_table, echo = FALSE}
+htmlTable(curves)
+```
+
+Below is a similar graph to the above, but showing only the detected TB cases per 100k instead of actual cases.
+```{R epi_curves_pos, echo = FALSE}
+curves_pos <- data.frame("year" = c(1:years_count), 
+"Scenario1" = a_mod_pos, 
+"Scenario2" = b_mod_pos, 
+"Scenario3" = c_mod_pos, 
+"Scenario4" = d_mod_pos, 
+"Scenario5" = e_mod_pos)
+
+ggplot(data = curves_pos, mapping = aes(x = year)) +
+  geom_line(mapping = aes(y = Scenario1), color = "black", size= 2) +
+  geom_line(aes(y = Scenario2), color = "red", size =2) +
+  geom_line(aes(y = Scenario3), color = "orange", size =2) +
+  geom_line(aes(y = Scenario4), color = "green", size =2) +
+  geom_line(aes(y = Scenario5), color = "blue", size =2) +
+  labs(x = "Years", y = "Detected cases/100k")  
+```
+
+Next we look at the case detection rate over time. This is essentially the above graph divided by the graph at the top of this page.
+```{R case_detection_rate_over_time, echo = FALSE}
+case_detection <- data.frame(
+"Year" = c(1:years_count),
+"Scenario1" = c(1: years_count),
+"Scenario2" = c(1: years_count),
+"Scenario3" = c(1: years_count),
+"Scenario4" = c(1: years_count),
+"Scenario5" = c(1: years_count))
+
+for (z in 1:years_count) {
+  case_detection$Scenario1[z] = (curves_pos$Scenario1[z] / curves$Scenario1[z]) * 100 
+}
+for (z in 1:years_count) {
+  case_detection$Scenario2[z] = (curves_pos$Scenario2[z] / curves$Scenario2[z]) * 100 
+}
+for (z in 1:years_count) {
+  case_detection$Scenario3[z] = (curves_pos$Scenario3[z] / curves$Scenario3[z]) * 100 
+}
+for (z in 1:years_count) {
+  case_detection$Scenario4[z] = (curves_pos$Scenario4[z] / curves$Scenario4[z]) * 100 
+}
+for (z in 1:years_count) {
+  case_detection$Scenario5[z] = (curves_pos$Scenario5[z] / curves$Scenario5[z]) * 100 
+}
+
+ggplot(data = case_detection, mapping = aes(x = Year)) +
+  geom_line(mapping = aes(y = Scenario1), color = "black", size= 2) +
+  geom_line(aes(y = Scenario2), color = "red", size =2) +
+  geom_line(aes(y = Scenario3), color = "orange", size =2) +
+  geom_line(aes(y = Scenario4), color = "green", size =2) +
+  geom_line(aes(y = Scenario5), color = "blue", size =2) +
+  labs(x = "Years", y = "Case detection rate")  
+
+htmlTable(case_detection)
+```
+
+## Where agents get infected
+
+The below numbers are only for the base scenario, since it is the scenario used for calibration. Based on a TB study that we are using to calibrate the model, we want the following spread of TB infections by space:
+
+Home 15.6, work 41.4, school 10.2, block 10.9, taxi 21.9 
+
+```{R percentages_non_intervention, echo = FALSE}
+jj <- dplyr::filter(a, Time_step == 519)
+percentages <- data.frame("Home" = mean(jj$Home), "Work" = mean(jj$Work), "School" = mean(jj$School), "Block" = mean(jj$Block), "Taxi" = mean(jj$Taxi))
+percentages <- prop.table(percentages)
+percentages <- round(percentages * 100, digits=1)
+htmlTable(percentages)
+
+jj <- select(jj, c("Home", "Work", "School", "Block", "Taxi")) 
+
+jj <- prop.table(data.matrix(jj), 1)
+
+jj <- as.data.frame(jj)
+
+home_v <- round(unname(quantile(jj$Home)), digit=3)*100
+work_v <- round(unname(quantile(jj$Work)), digit=3) *100
+school_v <- round(unname(quantile(jj$School)), digit=3) *100
+block_v <- round(unname(quantile(jj$Block)), digit=3) *100
+taxi_v <- round(unname(quantile(jj$Taxi)), digit=3) *100
+```
+
+And here it is with quantiles.
+
+Home
+`r home_v`
+
+Work
+`r work_v`
+
+School
+`r school_v`
+
+Block
+`r block_v`
+
+Taxi
+`r taxi_v`
+
+d
+
+
+## Histograms 
+
+These are histograms of infections and then of deaths - in each case showing the distribution between different runs. They provide a good way to tell whether the data is distributed as expected. Earlier versions of the model had clustering on the left and right - which seems to be gone in newer versions of the model.
+
+Infections - for all five scenarios combined
+```{R histogram_combined, echo = FALSE}
+j <- i
+qplot(j$agents_ever_active, geom="histogram", binwidth=10)
+```
+
+Infections - Scenario 1 - standard
+```{R histogram_s1, echo = FALSE}
+j <- a
+qplot(j$agents_ever_active, geom="histogram", binwidth=10)
+```
+
+Infections - Scenario 2 - standard + cti
+```{R histogram_s2, echo = FALSE}
+j <- b
+qplot(j$agents_ever_active, geom="histogram", binwidth=10)
+```
+
+Infections - Scenario 3 - standard + mass X-ray screening
+```{R histogram_s3, echo = FALSE}
+j <- c
+qplot(j$agents_ever_active, geom="histogram", binwidth=10)
+```
+
+Infections - Scenario 4 - standard + TUT
+```{R histogram_s4, echo = FALSE}
+j <- d
+qplot(j$agents_ever_active, geom="histogram", binwidth=10)
+```
+
+Infections - Scenario 5 - ultra (standard + TUT + mass x_ray)
+```{R histogram_s5, echo = FALSE}
+j <- e
+qplot(j$agents_ever_active, geom="histogram", binwidth=10)
+```
+
+## Flowchart
+
+This flowchart shows the possible disease progression paths.
+
+```{R flow, echo = FALSE}
+library(DiagrammeR)
+grViz(diagram = "digraph flowchart {
+      # define node aesthetics
+      node [fontname = Arial, shape = oval, color = Red, style = filled, fontcolor = White]        
+      tab1 [label = '@@1']
+      tab2 [label = '@@2', shape = diamond]
+      tab3 [label = '@@3', shape=rectangle]
+      tab4 [label = '@@4', shape = diamond]
+      tab5 [label = '@@5']
+      tab6 [label = '@@6']
+
+# set up node layout
+      tab1 -> tab2;
+      tab2 -> tab5;
+      tab2 -> tab3 -> tab4;
+      tab4 -> tab5;
+      tab4 -> tab6
+      }
+      [1]: 'Initial infection'
+      [2]: 'Latent Infection'
+      [3]: 'Sub-clinical disease'
+      [4]: 'Active disease'
+      [5]: 'Cure'
+      [6]: 'Death'
+      ")
+```
+
+

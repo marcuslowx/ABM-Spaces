@@ -1,0 +1,140 @@
+---
+title: "Calibration check"
+author: "Marcus Low"
+date: "March 2022"
+output:
+    html_document:  
+        toc: false
+        number_sections: false
+        fig_height: 7
+        fig_width: 12
+theme: darkly
+--- 
+
+```{R load_the_basics, include=FALSE}
+a <- read.csv("fit.csv")
+library(dplyr)
+library(ggplot2)
+library(htmlTable)
+runs_count <- length(a$Dead) /10
+years_count = (max(a$Time_step) +1)/52
+
+a_total_infections = c()
+a_pos = c()
+ 
+for (x in 1:years_count) {
+  a_filter <- dplyr::filter(a, Time_step == (x*52)-1)  
+  new_val_a <- mean(a_filter$total_active_cases)
+  new_pos_a <- mean(a_filter$Positive)
+  a_total_infections = append(a_total_infections, new_val_a) 
+  a_pos = append(a_pos, new_pos_a) 
+}
+
+a_mod =c()
+a_mod = append(a_mod, a_total_infections[1] * 5)
+a_mod_pos =c()
+a_mod_pos = append(a_mod_pos, a_pos[1] * 5)
+
+for (y in 2:years_count) {
+  a_mod = append(a_mod, 5 * (a_total_infections[y] - a_total_infections[y-1]))
+  a_mod_pos = append(a_mod_pos, 5 * (a_pos[y] - a_pos[y-1]))
+}
+```
+
+# Analysis {.tabset .tabset-fade .tabset-pills}
+
+## Calibration outputs
+The below is based on `r runs_count` runs of the base scenario.
+
+```{R case_detect, echo = FALSE}
+
+cd <- data.frame("year" = c(1:years_count), 
+"cases" = a_mod,
+"detected_cases" = a_mod_pos,
+"rate" = a_mod_pos/a_mod)
+
+avg_cases <- mean(cd$cases)
+avg_detected <- mean(cd$detected_cases) 
+avg_rate <- mean(cd$rate) 
+
+iqr_cases <- 0.5 * unname(quantile(a_filter$total_active_cases))
+iqr_detected <- 0.5 * unname(quantile(a_filter$Positive))
+iqr_rate <- unname(quantile(a_filter$Positive/a_filter$total_active_cases)) 
+```
+
+Here are the mean and IQR calculations to be used in the article. The mean here is the mean of all years in all runs of the model's base scenario - same with the IQR.
+
+Mean cases per 100k: `r iqr_cases` 
+
+Mean detected per 100k: `r iqr_detected` 
+
+Mean case detection rate: `r iqr_rate` 
+
+In the below calculations we calculated the mean for each year and then the mean for the 10 years. This is different from the above figures where we simply calculate the mean for all years from all runs of the model without the intermediate step of first calculating a mean for each of the ten years. 
+
+Mean cases per 100k: `r avg_cases` 
+
+Mean detected per 100k: `r avg_detected` 
+
+Mean case detection rate: `r avg_rate` 
+
+And here is a table with the information by year.
+```{R cd_table, echo = FALSE}
+htmlTable(cd)
+```
+
+Here is cases and detected cases over time on a graph
+```{R cases_and_detected_cases, echo = FALSE}
+ggplot(data = cd, mapping = aes(x = year)) +
+  geom_line(mapping = aes(y = cases), color = "black", size= 5) +
+  geom_line(mapping = aes(y = detected_cases), color = "black", size= 5) 
+```
+
+And here is case detection over time
+```{R case_detection_rate_over_time, echo = FALSE}
+ggplot(data = cd, mapping = aes(x = year)) +
+  geom_line(mapping = aes(y = rate), color = "black", size= 5)  
+```
+
+Where agents get infected
+
+Based on a TB study that we are using to calibrate the model, we want the following spread of TB infections by space:
+
+Home 15.6, work 41.4, school 10.2, block 10.9, taxi 21.9 
+
+```{R percentages_non_intervention, echo = FALSE}
+jj <- dplyr::filter(a, Time_step == 519)
+percentages <- data.frame("Home" = mean(jj$Home), "Work" = mean(jj$Work), "School" = mean(jj$School), "Block" = mean(jj$Block), "Taxi" = mean(jj$Taxi))
+percentages <- prop.table(percentages)
+percentages <- round(percentages * 100, digits=1)
+htmlTable(percentages)
+
+jj <- select(jj, c("Home", "Work", "School", "Block", "Taxi")) 
+
+jj <- prop.table(data.matrix(jj), 1)
+
+jj <- as.data.frame(jj)
+
+home_v <- round(unname(quantile(jj$Home)), digit=3)*100
+work_v <- round(unname(quantile(jj$Work)), digit=3) *100
+school_v <- round(unname(quantile(jj$School)), digit=3) *100
+block_v <- round(unname(quantile(jj$Block)), digit=3) *100
+taxi_v <- round(unname(quantile(jj$Taxi)), digit=3) *100
+```
+
+And here it is with quantiles.
+
+Home
+`r home_v`
+
+Work
+`r work_v`
+
+School
+`r school_v`
+
+Block
+`r block_v`
+
+Taxi
+`r taxi_v`

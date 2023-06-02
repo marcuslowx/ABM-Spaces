@@ -1,0 +1,215 @@
+---
+title: "Some model output analysis rendered using RMarkdown"
+author: "Marcus Low"
+date: "April 2023"
+output:
+    html_document:  
+        toc: false
+        number_sections: false
+        fig_height: 7
+        fig_width: 7
+theme: darkly
+--- 
+
+```{R load_the_basics, include=FALSE}
+a4 <- read.csv("a4.csv")
+a8 <- read.csv("a8.csv")
+a12 <- read.csv("a12.csv")
+a16 <- read.csv("a16.csv")
+a20 <- read.csv("a20.csv")
+a24 <- read.csv("a24.csv")
+a28 <- read.csv("a28.csv")
+a32 <- read.csv("a32.csv")
+a36 <- read.csv("a36.csv")
+a40 <- read.csv("a40.csv")
+a44 <- read.csv("a44.csv")
+a48 <- read.csv("a48.csv")
+a52 <- read.csv("a52.csv")
+a4s8 <- read.csv("a4s8.csv")
+a8s8 <- read.csv("a8s8.csv")
+a12s8 <- read.csv("a12s8.csv")
+a16s8 <- read.csv("a16s8.csv")
+a20s8 <- read.csv("a20s8.csv")
+a24s8 <- read.csv("a24s8.csv")
+a28s8 <- read.csv("a28s8.csv")
+a32s8 <- read.csv("a32s8.csv")
+a36s8 <- read.csv("a36s8.csv")
+a40s8 <- read.csv("a40s8.csv")
+a44s8 <- read.csv("a44s8.csv")
+a48s8 <- read.csv("a48s8.csv")
+a52s8 <- read.csv("a52s8.csv")
+
+a4s9 <- read.csv("a4s9.csv")
+a8s9 <- read.csv("a8s9.csv")
+a12s9 <- read.csv("a12s9.csv")
+a16s9 <- read.csv("a16s9.csv")
+a20s9 <- read.csv("a20s9.csv")
+a24s9 <- read.csv("a24s9.csv")
+a28s9 <- read.csv("a28s9.csv")
+a32s9 <- read.csv("a32s9.csv")
+a36s9 <- read.csv("a36s9.csv")
+a40s9 <- read.csv("a40s9.csv")
+a44s9 <- read.csv("a44s9.csv")
+a48s9 <- read.csv("a48s9.csv")
+a52s9 <- read.csv("a52s9.csv")
+a4s1 <- read.csv("a4s1.csv")
+a8s1 <- read.csv("a8s1.csv")
+a12s1 <- read.csv("a12s1.csv")
+a16s1 <- read.csv("a16s1.csv")
+a20s1 <- read.csv("a20s1.csv")
+a24s1 <- read.csv("a24s1.csv")
+a28s1 <- read.csv("a28s1.csv")
+a32s1 <- read.csv("a32s1.csv")
+a36s1 <- read.csv("a36s1.csv")
+a40s1 <- read.csv("a40s1.csv")
+a44s1 <- read.csv("a44s1.csv")
+a48s1 <- read.csv("a48s1.csv")
+a52s1 <- read.csv("a52s1.csv")
+library(dplyr)
+library(ggplot2)
+library(gridExtra)
+library(htmlTable)
+runs_count <- length(a4$latent_infections)
+```
+
+# Analysis {.tabset .tabset-fade .tabset-pills}
+
+## The numbers
+The below is based on `r runs_count` runs of the model.
+
+Some basics
+
+```{R basic_numbers, echo = FALSE}
+a4 <- dplyr::filter(a4, Time_step == 519)
+a8 <- dplyr::filter(a8, Time_step == 519)
+a12 <- dplyr::filter(a12, Time_step == 519)
+a16 <- dplyr::filter(a16, Time_step == 519)
+a20 <- dplyr::filter(a20, Time_step == 519)
+a24 <- dplyr::filter(a24, Time_step == 519)
+a28 <- dplyr::filter(a28, Time_step == 519)
+a32 <- dplyr::filter(a32, Time_step == 519)
+a36 <- dplyr::filter(a36, Time_step == 519)
+a40 <- dplyr::filter(a40, Time_step == 519)
+a44 <- dplyr::filter(a44, Time_step == 519)
+a48 <- dplyr::filter(a48, Time_step == 519)
+a52 <- dplyr::filter(a52, Time_step == 519)
+a4s8 <- dplyr::filter(a4s8, Time_step == 519)
+a8s8 <- dplyr::filter(a8s8, Time_step == 519)
+a12s8 <- dplyr::filter(a12s8, Time_step == 519)
+a16s8 <- dplyr::filter(a16s8, Time_step == 519)
+a20s8 <- dplyr::filter(a20s8, Time_step == 519)
+a24s8 <- dplyr::filter(a24s8, Time_step == 519)
+a28s8 <- dplyr::filter(a28s8, Time_step == 519)
+a32s8 <- dplyr::filter(a32s8, Time_step == 519)
+a36s8 <- dplyr::filter(a36s8, Time_step == 519)
+a40s8 <- dplyr::filter(a40s8, Time_step == 519)
+a44s8 <- dplyr::filter(a44s8, Time_step == 519)
+a48s8 <- dplyr::filter(a48s8, Time_step == 519)
+a52s8 <- dplyr::filter(a52s8, Time_step == 519)
+a4s9 <- dplyr::filter(a4s9, Time_step == 519)
+a8s9 <- dplyr::filter(a8s9, Time_step == 519)
+a12s9 <- dplyr::filter(a12s9, Time_step == 519)
+a16s9 <- dplyr::filter(a16s9, Time_step == 519)
+a20s9 <- dplyr::filter(a20s9, Time_step == 519)
+a24s9 <- dplyr::filter(a24s9, Time_step == 519)
+a28s9 <- dplyr::filter(a28s9, Time_step == 519)
+a32s9 <- dplyr::filter(a32s9, Time_step == 519)
+a36s9 <- dplyr::filter(a36s9, Time_step == 519)
+a40s9 <- dplyr::filter(a40s9, Time_step == 519)
+a44s9 <- dplyr::filter(a44s9, Time_step == 519)
+a48s9 <- dplyr::filter(a48s9, Time_step == 519)
+a52s9 <- dplyr::filter(a52s9, Time_step == 519)
+a4s1 <- dplyr::filter(a4s1, Time_step == 519)
+a8s1 <- dplyr::filter(a8s1, Time_step == 519)
+a12s1 <- dplyr::filter(a12s1, Time_step == 519)
+a16s1 <- dplyr::filter(a16s1, Time_step == 519)
+a20s1 <- dplyr::filter(a20s1, Time_step == 519)
+a24s1 <- dplyr::filter(a24s1, Time_step == 519)
+a28s1 <- dplyr::filter(a28s1, Time_step == 519)
+a32s1 <- dplyr::filter(a32s1, Time_step == 519)
+a36s1 <- dplyr::filter(a36s1, Time_step == 519)
+a40s1 <- dplyr::filter(a40s1, Time_step == 519)
+a44s1 <- dplyr::filter(a44s1, Time_step == 519)
+a48s1 <- dplyr::filter(a48s1, Time_step == 519)
+a52s1 <- dplyr::filter(a52s1, Time_step == 519)
+
+a <- data.frame("Weeks" = c(4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52),
+"Dead7" = c(mean(a4$Dead), mean(a8$Dead),mean(a12$Dead),mean(a16$Dead),mean(a20$Dead),mean(a24$Dead),mean(a28$Dead),mean(a32$Dead),mean(a36$Dead),mean(a40$Dead),mean(a44$Dead),mean(a48$Dead),mean(a52$Dead)),
+"Dead8" = c(mean(a4s8$Dead), mean(a8s8$Dead),mean(a12s8$Dead),mean(a16s8$Dead),mean(a20s8$Dead),mean(a24s8$Dead),mean(a28s8$Dead),mean(a32s8$Dead),mean(a36s8$Dead),mean(a40s8$Dead),mean(a44s8$Dead),mean(a48s8$Dead),mean(a52s8$Dead)),
+"Dead9" = c(mean(a4s9$Dead), mean(a8s9$Dead),mean(a12s9$Dead),mean(a16s9$Dead),mean(a20s9$Dead),mean(a24s9$Dead),mean(a28s9$Dead),mean(a32s9$Dead),mean(a36s9$Dead),mean(a40s9$Dead),mean(a44s9$Dead),mean(a48s9$Dead),mean(a52s9$Dead)),
+"Dead10" = c(mean(a4s1$Dead), mean(a8s1$Dead),mean(a12s1$Dead),mean(a16s1$Dead),mean(a20s1$Dead),mean(a24s1$Dead),mean(a28s1$Dead),mean(a32s1$Dead),mean(a36s1$Dead),mean(a40s1$Dead),mean(a44s1$Dead),mean(a48s1$Dead),mean(a52s1$Dead)),
+"Active7" =c(mean(a4$agents_ever_active), mean(a8$agents_ever_active),mean(a12$agents_ever_active),mean(a16$agents_ever_active),mean(a20$agents_ever_active),mean(a24$agents_ever_active),mean(a28$agents_ever_active),mean(a32$agents_ever_active),mean(a36$agents_ever_active),mean(a40$agents_ever_active),mean(a44$agents_ever_active),mean(a48$agents_ever_active),mean(a52$agents_ever_active)),
+"Active8" =c(mean(a4s8$agents_ever_active), mean(a8s8$agents_ever_active),mean(a12s8$agents_ever_active),mean(a16s8$agents_ever_active),mean(a20s8$agents_ever_active),mean(a24s8$agents_ever_active),mean(a28s8$agents_ever_active),mean(a32s8$agents_ever_active),mean(a36s8$agents_ever_active),mean(a40s8$agents_ever_active),mean(a44s8$agents_ever_active),mean(a48s8$agents_ever_active),mean(a52s8$agents_ever_active)),
+"Active9" =c(mean(a4s9$agents_ever_active), mean(a8s9$agents_ever_active),mean(a12s9$agents_ever_active),mean(a16s9$agents_ever_active),mean(a20s9$agents_ever_active),mean(a24s9$agents_ever_active),mean(a28s9$agents_ever_active),mean(a32s9$agents_ever_active),mean(a36s9$agents_ever_active),mean(a40s9$agents_ever_active),mean(a44s9$agents_ever_active),mean(a48s9$agents_ever_active),mean(a52s9$agents_ever_active)),
+"Active10" =c(mean(a4s1$agents_ever_active), mean(a8s1$agents_ever_active),mean(a12s1$agents_ever_active),mean(a16s1$agents_ever_active),mean(a20s1$agents_ever_active),mean(a24s1$agents_ever_active),mean(a28s1$agents_ever_active),mean(a32s1$agents_ever_active),mean(a36s1$agents_ever_active),mean(a40s1$agents_ever_active),mean(a44s1$agents_ever_active),mean(a48s1$agents_ever_active),mean(a52s1$agents_ever_active)),
+"TimeInfectious7" = c(mean(a4$mean_time_infectious), mean(a8$mean_time_infectious),mean(a12$mean_time_infectious),mean(a16$mean_time_infectious),mean(a20$mean_time_infectious),mean(a24$mean_time_infectious),mean(a28$mean_time_infectious),mean(a32$mean_time_infectious),mean(a36$mean_time_infectious),mean(a40$mean_time_infectious),mean(a44$mean_time_infectious),mean(a48$mean_time_infectious),mean(a52$mean_time_infectious)),
+"TimeInfectious8" = c(mean(a4s8$mean_time_infectious), mean(a8s8$mean_time_infectious),mean(a12s8$mean_time_infectious),mean(a16s8$mean_time_infectious),mean(a20s8$mean_time_infectious),mean(a24s8$mean_time_infectious),mean(a28s8$mean_time_infectious),mean(a32s8$mean_time_infectious),mean(a36s8$mean_time_infectious),mean(a40s8$mean_time_infectious),mean(a44s8$mean_time_infectious),mean(a48s8$mean_time_infectious),mean(a52s8$mean_time_infectious)),
+"TimeInfectious9" = c(mean(a4s9$mean_time_infectious), mean(a8s9$mean_time_infectious),mean(a12s9$mean_time_infectious),mean(a16s9$mean_time_infectious),mean(a20s9$mean_time_infectious),mean(a24s9$mean_time_infectious),mean(a28s9$mean_time_infectious),mean(a32s9$mean_time_infectious),mean(a36s9$mean_time_infectious),mean(a40s9$mean_time_infectious),mean(a44s9$mean_time_infectious),mean(a48s9$mean_time_infectious),mean(a52s9$mean_time_infectious)),
+"TimeInfectious10" = c(mean(a4s1$mean_time_infectious), mean(a8s1$mean_time_infectious),mean(a12s1$mean_time_infectious),mean(a16s1$mean_time_infectious),mean(a20s1$mean_time_infectious),mean(a24s1$mean_time_infectious),mean(a28s1$mean_time_infectious),mean(a32s1$mean_time_infectious),mean(a36s1$mean_time_infectious),mean(a40s1$mean_time_infectious),mean(a44s1$mean_time_infectious),mean(a48s1$mean_time_infectious),mean(a52s1$mean_time_infectious)),
+"TimeActive7" = c(mean(a4$mean_time_active), mean(a8$mean_time_active),mean(a12$mean_time_active),mean(a16$mean_time_active),mean(a20$mean_time_active),mean(a24$mean_time_active),mean(a28$mean_time_active),mean(a32$mean_time_active),mean(a36$mean_time_active),mean(a40$mean_time_active),mean(a44$mean_time_active),mean(a48$mean_time_active),mean(a52$mean_time_active)),
+"TimeActive8" = c(mean(a4s8$mean_time_active), mean(a8s8$mean_time_active),mean(a12s8$mean_time_active),mean(a16s8$mean_time_active),mean(a20s8$mean_time_active),mean(a24s8$mean_time_active),mean(a28s8$mean_time_active),mean(a32s8$mean_time_active),mean(a36s8$mean_time_active),mean(a40s8$mean_time_active),mean(a44s8$mean_time_active),mean(a48s8$mean_time_active),mean(a52s8$mean_time_active)),
+"TimeActive9" = c(mean(a4s9$mean_time_active), mean(a8s9$mean_time_active),mean(a12s9$mean_time_active),mean(a16s9$mean_time_active),mean(a20s9$mean_time_active),mean(a24s9$mean_time_active),mean(a28s9$mean_time_active),mean(a32s9$mean_time_active),mean(a36s9$mean_time_active),mean(a40s9$mean_time_active),mean(a44s9$mean_time_active),mean(a48s9$mean_time_active),mean(a52s9$mean_time_active)),
+"TimeActive10" = c(mean(a4s1$mean_time_active), mean(a8s1$mean_time_active),mean(a12s1$mean_time_active),mean(a16s1$mean_time_active),mean(a20s1$mean_time_active),mean(a24s1$mean_time_active),mean(a28s1$mean_time_active),mean(a32s1$mean_time_active),mean(a36s1$mean_time_active),mean(a40s1$mean_time_active),mean(a44s1$mean_time_active),mean(a48s1$mean_time_active),mean(a52s1$mean_time_active))
+)
+htmlTable(a)
+```
+
+And some graphs. First infections 
+
+```{R Infections_curves, echo = FALSE}
+ggplot(data = a, mapping = aes(x = Weeks)) +
+  geom_line(aes(y= Active7), color="red") +
+  geom_line(aes(y= Active8), color="orange") +
+  geom_line(aes(y= Active9), color="green") +
+  geom_line(aes(y= Active10), color="blue") +
+  labs(x = "Weeks", y = "Mean active TB cases", title ="Test frequency and mean cases of active TB") +
+  scale_fill_discrete(labels=c("70% sensitivity", "80% sensitivity", "90% sensitivity", "100% sensitivity")) +
+  theme_gray()
+ggsave("fig5.png")
+```
+
+and deaths
+
+```{R deaths_curves, echo = FALSE}
+ggplot(data = a, mapping = aes(x = Weeks, y=Dead7)) +
+  geom_line(color = "red") +
+  geom_line(aes(y=Dead8), color = "orange") +
+  geom_line(aes(y=Dead9), color = "green") +
+  geom_line(aes(y=Dead10), color = "blue") +
+  labs(x = "Weeks", y = "Mean TB deaths", title ="Test frequency and mean TB deaths") +
+  scale_fill_discrete(labels=c("70% sensitivity", "80% sensitivity", "90% sensitivity", "100% sensitivity")) +
+  theme_gray()  
+ggsave("fig6.png")
+```
+
+And time infectious 
+
+```{R time_infectious_curves, echo = FALSE}
+ggplot(data = a, mapping = aes(x = Weeks, y=TimeInfectious7)) +
+  geom_line(color = "red") +
+  geom_line(aes(y=TimeInfectious8), color = "orange") +
+  geom_line(aes(y=TimeInfectious9), color = "green") +
+  geom_line(aes(y=TimeInfectious10), color = "blue") +
+  labs(x = "Weeks", y = "Mean period infectious", title ="Test frequency and mean infectious period") +
+  scale_fill_discrete(labels=c("70% sensitivity", "80% sensitivity", "90% sensitivity", "100% sensitivity")) +
+  theme_gray()  
+ggsave("fig7.png")
+```
+
+And time active
+
+```{R time_active_curves, echo = FALSE}
+ggplot(data = a, mapping = aes(x = Weeks, y=TimeActive7)) +
+  geom_line(color = "red") +
+  geom_line(aes(y=TimeActive8), color = "orange") +
+  geom_line(aes(y=TimeActive9), color = "green") +
+  geom_line(aes(y=TimeActive10), color = "blue") +
+  labs(x = "Weeks", y = "Mean period active TB", title ="Test frequency and mean period with active disease") +
+  scale_fill_discrete(labels=c("70% sensitivity", "80% sensitivity", "90% sensitivity", "100% sensitivity")) +
+  theme_gray()
+ggsave("fig8.png")
+```
+
+
+
+

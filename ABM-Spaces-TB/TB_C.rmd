@@ -1,0 +1,33 @@
+---
+title: "Some model output analysis rendered using RMarkdown"
+author: "Marcus Low"
+date: "June 2021"
+output:
+    html_document:  
+        toc: false
+        number_sections: false
+        fig_height: 7
+        fig_width: 7
+theme: darkly
+--- 
+
+```{R load_the_basics, include=FALSE}
+a <- read.csv("tb_test.csv")
+library(dplyr)
+library(ggplot2)
+library(htmlTable)
+runs_count <- length(a$latent_infections)
+```
+
+# Analysis {.tabset .tabset-fade .tabset-pills}
+
+## The numbers
+The below is based on `r runs_count` runs of the model.
+
+Some basics
+
+```{R basic_numbers, echo = FALSE}
+a <- data.frame(a)
+htmlTable(a)
+```
+

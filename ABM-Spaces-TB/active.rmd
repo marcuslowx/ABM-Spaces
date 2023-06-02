@@ -1,0 +1,35 @@
+---
+title: "Some fun with graphs"
+author: "Marcus Low"
+date: "January 2022"
+output:
+    html_document:  
+        toc: false
+        number_sections: false
+        fig_height: 7
+        fig_width: 12
+theme: darkly
+--- 
+
+```{R make_graph, echo=FALSE}
+
+library("ggplot2")
+
+p <- data.frame(
+"vals" = c(230, 230, 230, 110, 70, 35, 17.5, 17.5, 12.5, 12.5, 5, 5, 3.75, 3.75, 3.75, 3.75, 2.5, 2.5, 2.5, 2.5),
+"vals2" = c(250, 250, 250, 250, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), 
+"year" = c(1:20))
+
+ggplot(data = p, mapping= aes(y=vals, x=year)) +
+  geom_area(color="black", fill="darkblue", alpha=0.8) +
+  geom_area(aes(y=vals2, x=year), color="black", fill="green", alpha=0.8)  
+```
+Second try
+
+```{R make_graph2, echo=FALSE}
+
+ggplot(data = p, mapping= aes(y=vals, x=year)) +
+  geom_smooth(se=FALSE, span=0.3, color="red", size=3) +
+ geom_step(aes(y=vals2, x=year), color="darkblue", size=3) 
+
+```

@@ -1,0 +1,77 @@
+---
+title: "Calibration check"
+author: "Marcus Low"
+date: "April 2023"
+output:
+    html_document:  
+        toc: false
+        number_sections: false
+        fig_height: 7
+        fig_width: 12
+theme: darkly
+--- 
+
+```{R load_the_basics, include=FALSE}
+fit <- read.csv("fit.csv")
+library(dplyr)
+library(ggplot2)
+library(htmlTable)
+runs_count <- length(fit$Dead) 
+```
+
+# Analysis {.tabset .tabset-fade .tabset-pills}
+
+## Calibration outputs
+The below is based on `r runs_count` runs of the base scenario.
+
+```{R R0_detect, echo = FALSE}
+mean_r <- mean(fit$R0)
+
+```
+
+Here are the mean and IQR calculations to be used in the article. The mean here is the mean of all years in all runs of the model's base scenario - same with the IQR.
+
+Mean R0: `r mean_r` 
+
+Where agents get infected
+
+Based on a TB study that we are using to calibrate the model, we want the following spread of TB infections by space:
+
+Home 15.6, work 41.4, school 10.2, block 10.9, taxi 21.9 
+
+```{R percentages_non_intervention, echo = FALSE}
+jj <- fit
+percentages <- data.frame("Home" = mean(jj$Home), "Work" = mean(jj$Work), "School" = mean(jj$School), "Block" = mean(jj$Block), "Taxi" = mean(jj$Taxi))
+percentages <- prop.table(percentages)
+percentages <- round(percentages * 100, digits=1)
+htmlTable(percentages)
+
+jj <- select(jj, c("Home", "Work", "School", "Block", "Taxi")) 
+
+jj <- prop.table(data.matrix(jj), 1)
+
+jj <- as.data.frame(jj)
+
+home_v <- round(unname(quantile(jj$Home)), digit=3)*100
+work_v <- round(unname(quantile(jj$Work)), digit=3) *100
+school_v <- round(unname(quantile(jj$School)), digit=3) *100
+block_v <- round(unname(quantile(jj$Block)), digit=3) *100
+taxi_v <- round(unname(quantile(jj$Taxi)), digit=3) *100
+```
+
+And here it is with quantiles.
+
+Home
+`r home_v`
+
+Work
+`r work_v`
+
+School
+`r school_v`
+
+Block
+`r block_v`
+
+Taxi
+`r taxi_v`
