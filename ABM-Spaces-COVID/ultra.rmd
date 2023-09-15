@@ -83,45 +83,43 @@ Infections
 This plot shows how total infections rise with longer TaTs. The three lines are for no CTI, CTI with testing of contacts, and CTI without testing of contacts. (The code for this graph can be improved in the file ultra.rmd.) 
 
 ```{R TaT_infections, echo = FALSE}
-p <- ggplot(data = k, aes(x = TaT)) +
-geom_line(aes(y = Infections_no_cti), color="lightblue") +
-geom_line(aes(y = Infections_cti_test), color="darkblue") +
-geom_line(aes(y = Infections_cti_no_test), color="blue") +
- labs(x = "TAT", y = "Mean infections", title ="TAT and mean infections") +
-  scale_fill_discrete(labels=c("No CTI", "CTI with testing", "CTI without testing")) +
+library(reshape2)
+a_graph <- select(k, TaT, Infections_no_cti, Infections_cti_test, Infections_cti_no_test)
+colnames(a_graph) <- c("TaT", "No CTI", "CTI with test", "CTI without test")
+a_graph <- reshape2::melt(a_graph, id.vars = "TaT")
+ggplot(data = a_graph, aes(x = TaT, y = value, colour = variable)) +
+geom_line() +
+ labs(x = "TaT", y = "Mean infections", title ="TaT and mean infections") +
   theme_gray()
 ggsave("fig10.png")
-show(p)
 ```
 
 Deaths
 This plot shows how total mean deaths rise with longer TaTs. The three lines are for no CTI, CTI with testing of contacts, and CTI without testing of contacts. (The code for this graph can be improved in the file ultra.rmd.) 
 
 ```{R TaT_dead, echo = FALSE}
-p <- ggplot(data = k, aes(x = TaT)) +
-geom_line(aes(y = Dead_no_cti), color="lightblue") +
-geom_line(aes(y = Dead_cti_test), color="darkblue") +
-geom_line(aes(y = Dead_cti_no_test), color="blue") +
- labs(x = "TAT", y = "Mean deaths", title ="TAT and mean deaths") +
-  scale_fill_discrete(labels=c("No CTI", "CTI with testing", "CTI without testing")) +
+a_graph <- select(k, TaT, Dead_no_cti, Dead_cti_test, Dead_cti_no_test)
+colnames(a_graph) <- c("TaT", "No CTI", "CTI with test", "CTI without test")
+a_graph <- reshape2::melt(a_graph, id.vars = "TaT")
+ggplot(data = a_graph, aes(x = TaT, y = value, colour = variable)) +
+geom_line() +
+ labs(x = "TaT", y = "Mean deaths", title ="TaT and mean deaths") +
   theme_gray()
 ggsave("fig11.png")
-show(p)
 ```
 
 Tests
 This plot shows how total mean tests rise with longer TaTs. The three lines are for no CTI, CTI with testing of contacts, and CTI without testing of contacts. (The code for this graph can be improved in the file ultra.rmd.) 
 
 ```{R TaT_tests, echo = FALSE}
-p <- ggplot(data = k, aes(x = TaT)) +
-geom_line(aes(y = Tests_no_cti), color="lightblue") +
-geom_line(aes(y = Tests_cti_test), color="darkblue") +
-geom_line(aes(y = Tests_cti_no_test), color="blue") +
- labs(x = "TAT", y = "Mean tests", title ="TAT and mean number of tests") +
-  scale_fill_discrete(labels=c("No CTI", "CTI with testing", "CTI without testing")) +
+a_graph <- select(k, TaT, Tests_no_cti, Tests_cti_test, Tests_cti_no_test)
+colnames(a_graph) <- c("TaT", "No CTI", "CTI with test", "CTI without test")
+a_graph <- reshape2::melt(a_graph, id.vars = "TaT")
+ggplot(data = a_graph, aes(x = TaT, y = value, colour = variable)) +
+geom_line() +
+ labs(x = "TaT", y = "Mean tests", title ="TaT and mean number of tests") +
   theme_gray()
 ggsave("fig12.png")
-show(p)
 ```
 
 # Differences between TaT values
