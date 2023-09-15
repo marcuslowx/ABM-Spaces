@@ -157,13 +157,13 @@ htmlTable(a)
 And some graphs. First infections 
 
 ```{R Infections_curves, echo = FALSE}
-ggplot(data = a, mapping = aes(x = Weeks)) +
-  geom_line(aes(y= Active7), color="red") +
-  geom_line(aes(y= Active8), color="orange") +
-  geom_line(aes(y= Active9), color="green") +
-  geom_line(aes(y= Active10), color="blue") +
+library(reshape2)
+a_graph <- select(a, Weeks, Active7, Active8, Active9, Active10)
+colnames(a_graph) <- c("Weeks", "70% sensitivity", "80% sensitivity", "90% sensitivity", "100% sensitivity")
+a_graph <- reshape2::melt(a_graph, id.vars = "Weeks")
+ggplot(data = a_graph, aes(x = Weeks, y = value, colour = variable)) +
+geom_line() +
   labs(x = "Weeks", y = "Mean active TB cases", title ="Test frequency and mean cases of active TB") +
-  scale_fill_discrete(labels=c("70% sensitivity", "80% sensitivity", "90% sensitivity", "100% sensitivity")) +
   theme_gray()
 ggsave("fig5.png")
 ```
@@ -171,27 +171,25 @@ ggsave("fig5.png")
 and deaths
 
 ```{R deaths_curves, echo = FALSE}
-ggplot(data = a, mapping = aes(x = Weeks, y=Dead7)) +
-  geom_line(color = "red") +
-  geom_line(aes(y=Dead8), color = "orange") +
-  geom_line(aes(y=Dead9), color = "green") +
-  geom_line(aes(y=Dead10), color = "blue") +
+a_graph <- select(a, Weeks, Dead7, Dead8, Dead9, Dead10)
+colnames(a_graph) <- c("Weeks", "70% sensitivity", "80% sensitivity", "90% sensitivity", "100% sensitivity")
+a_graph <- reshape2::melt(a_graph, id.vars = "Weeks")
+ggplot(data = a_graph, aes(x = Weeks, y = value, colour = variable)) +
+geom_line() +
   labs(x = "Weeks", y = "Mean TB deaths", title ="Test frequency and mean TB deaths") +
-  scale_fill_discrete(labels=c("70% sensitivity", "80% sensitivity", "90% sensitivity", "100% sensitivity")) +
-  theme_gray()  
+   theme_gray()  
 ggsave("fig6.png")
 ```
 
 And time infectious 
 
 ```{R time_infectious_curves, echo = FALSE}
-ggplot(data = a, mapping = aes(x = Weeks, y=TimeInfectious7)) +
-  geom_line(color = "red") +
-  geom_line(aes(y=TimeInfectious8), color = "orange") +
-  geom_line(aes(y=TimeInfectious9), color = "green") +
-  geom_line(aes(y=TimeInfectious10), color = "blue") +
+a_graph <- select(a, Weeks, TimeInfectious7, TimeInfectious8, TimeInfectious9, TimeInfectious10)
+colnames(a_graph) <- c("Weeks", "70% sensitivity", "80% sensitivity", "90% sensitivity", "100% sensitivity")
+a_graph <- reshape2::melt(a_graph, id.vars = "Weeks")
+ggplot(data = a_graph, aes(x = Weeks, y = value, colour = variable)) +
+geom_line() +
   labs(x = "Weeks", y = "Mean period infectious", title ="Test frequency and mean infectious period") +
-  scale_fill_discrete(labels=c("70% sensitivity", "80% sensitivity", "90% sensitivity", "100% sensitivity")) +
   theme_gray()  
 ggsave("fig7.png")
 ```
@@ -199,13 +197,12 @@ ggsave("fig7.png")
 And time active
 
 ```{R time_active_curves, echo = FALSE}
-ggplot(data = a, mapping = aes(x = Weeks, y=TimeActive7)) +
-  geom_line(color = "red") +
-  geom_line(aes(y=TimeActive8), color = "orange") +
-  geom_line(aes(y=TimeActive9), color = "green") +
-  geom_line(aes(y=TimeActive10), color = "blue") +
+a_graph <- select(a, Weeks, TimeActive7, TimeActive8, TimeActive9, TimeActive10)
+colnames(a_graph) <- c("Weeks", "70% sensitivity", "80% sensitivity", "90% sensitivity", "100% sensitivity")
+a_graph <- reshape2::melt(a_graph, id.vars = "Weeks")
+ggplot(data = a_graph, aes(x = Weeks, y = value, colour = variable)) +
+geom_line() +
   labs(x = "Weeks", y = "Mean period active TB", title ="Test frequency and mean period with active disease") +
-  scale_fill_discrete(labels=c("70% sensitivity", "80% sensitivity", "90% sensitivity", "100% sensitivity")) +
   theme_gray()
 ggsave("fig8.png")
 ```
