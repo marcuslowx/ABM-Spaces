@@ -264,14 +264,14 @@ curves <- data.frame("year" = c(1:years_count),
 
 write.csv(curves, "curves.csv", row.names=FALSE)
 
-ggplot(data = curves, mapping = aes(x = year)) +
-  geom_line(mapping = aes(y = Scenario1), color = "purple") +
-  geom_line(aes(y = Scenario2), color = "red") +
-  geom_line(aes(y = Scenario3), color = "orange") +
-  geom_line(aes(y = Scenario4), color = "green") +
-  geom_line(aes(y = Scenario5), color = "blue") +
+library(reshape2)
+curves_graph <- curves
+colnames(curves_graph) <- c("Year", "Base", "CTI", "Xray", "TUT", "Ultra")
+curves_graph <- reshape2::melt(curves_graph, id.vars = "Year")
+
+ggplot(data = curves_graph, aes(x = Year, y = value, colour = variable)) +
+  geom_line() +
  labs(x = "Years", y = "Active cases/100k", title ="Active TB cases/100k over time") +
-  scale_fill_discrete(labels=c("Base scenario", "Base + CTI", "Mass X-ray + CTI", "TUT + CTI", "Ultra + CTI")) +
   theme_gray()
 ggsave("fig3.png")
 ```
@@ -293,7 +293,7 @@ curves_pos <- data.frame("year" = c(1:years_count),
 "Scenario5" = e_mod_pos)
 
 ggplot(data = curves_pos, mapping = aes(x = year)) +
-  geom_line(mapping = aes(y = Scenario1), color = "black", size= 2) +
+  geom_line(mapping = aes(y = Scenario1, color = "purple")) +
   geom_line(aes(y = Scenario2), color = "red", size =2) +
   geom_line(aes(y = Scenario3), color = "orange", size =2) +
   geom_line(aes(y = Scenario4), color = "green", size =2) +
@@ -306,36 +306,33 @@ Next we look at the case detection rate over time. This is essentially the above
 ```{R case_detection_rate_over_time, echo = FALSE}
 case_detection <- data.frame(
 "Year" = c(1:years_count),
-"Scenario1" = c(1: years_count),
-"Scenario2" = c(1: years_count),
-"Scenario3" = c(1: years_count),
-"Scenario4" = c(1: years_count),
-"Scenario5" = c(1: years_count))
+"Base" = c(1: years_count),
+"CTI" = c(1: years_count),
+"Xray" = c(1: years_count),
+"TUT" = c(1: years_count),
+"Ultra" = c(1: years_count))
 
 for (z in 1:years_count) {
-  case_detection$Scenario1[z] = (curves_pos$Scenario1[z] / curves$Scenario1[z]) * 100 
+  case_detection$Base[z] = (curves_pos$Scenario1[z] / curves$Scenario1[z]) * 100 
 }
 for (z in 1:years_count) {
-  case_detection$Scenario2[z] = (curves_pos$Scenario2[z] / curves$Scenario2[z]) * 100 
+  case_detection$"CTI"[z] = (curves_pos$Scenario2[z] / curves$Scenario2[z]) * 100 
 }
 for (z in 1:years_count) {
-  case_detection$Scenario3[z] = (curves_pos$Scenario3[z] / curves$Scenario3[z]) * 100 
+  case_detection$Xray[z] = (curves_pos$Scenario3[z] / curves$Scenario3[z]) * 100 
 }
 for (z in 1:years_count) {
-  case_detection$Scenario4[z] = (curves_pos$Scenario4[z] / curves$Scenario4[z]) * 100 
+  case_detection$TUT[z] = (curves_pos$Scenario4[z] / curves$Scenario4[z]) * 100 
 }
 for (z in 1:years_count) {
-  case_detection$Scenario5[z] = (curves_pos$Scenario5[z] / curves$Scenario5[z]) * 100 
+  case_detection$Ultra[z] = (curves_pos$Scenario5[z] / curves$Scenario5[z]) * 100 
 }
 
-ggplot(data = case_detection, mapping = aes(x = Year)) +
-  geom_line(mapping = aes(y = Scenario1), color = "purple") +
-  geom_line(aes(y = Scenario2), color = "red") +
-  geom_line(aes(y = Scenario3), color = "orange") +
-  geom_line(aes(y = Scenario4), color = "green") +
-  geom_line(aes(y = Scenario5), color = "blue") +
+case_detection_graph <- reshape2::melt(case_detection, id.vars = "Year")
+
+ggplot(data = case_detection_graph, aes(x = Year, y = value, colour = variable)) +
+  geom_line() +
  labs(x = "Years", y = "Case detection rate", title ="Case detection rate over time") +
-  scale_fill_discrete(labels=c("Base scenario", "Base + CTI", "Mass X-ray  + CTI", "TUT + CTI", "Ultra + CTI")) +
   ylim(0, 100) +
   theme_gray()
 ggsave("fig4.png")
