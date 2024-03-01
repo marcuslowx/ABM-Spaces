@@ -131,31 +131,112 @@ c_filter <- dplyr::filter(c, Time_step == 519)
 d_filter <- dplyr::filter(d, Time_step == 519)  
 e_filter <- dplyr::filter(e, Time_step == 519)  
 
+cases_a_l <- 0.5 * quantile(a_filter$total_active_cases, probs = 0.025)
 cases_a <- 0.5 * mean(a_filter$total_active_cases)
+cases_a_h <- 0.5 * quantile(a_filter$total_active_cases, probs = 0.975)
+cases_b_l <- 0.5 * quantile(b_filter$total_active_cases, probs = 0.025)
 cases_b <- 0.5 * mean(b_filter$total_active_cases)
+cases_b_h <- 0.5 * quantile(b_filter$total_active_cases, probs = 0.975)
+cases_c_l <- 0.5 * quantile(c_filter$total_active_cases, probs = 0.025)
 cases_c <- 0.5 * mean(c_filter$total_active_cases)
+cases_c_h <- 0.5 * quantile(c_filter$total_active_cases, probs = 0.975)
+cases_d_l <- 0.5 * quantile(d_filter$total_active_cases, probs = 0.025)
 cases_d <- 0.5 * mean(d_filter$total_active_cases)
+cases_d_h <- 0.5 * quantile(d_filter$total_active_cases, probs = 0.975)
+cases_e_l <- 0.5 * quantile(e_filter$total_active_cases, probs = 0.025)
 cases_e <- 0.5 * mean(e_filter$total_active_cases)
+cases_e_h <- 0.5 * quantile(e_filter$total_active_cases, probs = 0.975)
 
+detected_a_l <- 0.5 * quantile(a_filter$Positive, probs = 0.025)
 detected_a <- 0.5 * mean(a_filter$Positive)
+detected_a_h <- 0.5 * quantile(a_filter$Positive, probs = 0.975)
+detected_b_l <- 0.5 * quantile(b_filter$Positive, probs = 0.025)
 detected_b <- 0.5 * mean(b_filter$Positive)
+detected_b_h <- 0.5 * quantile(b_filter$Positive, probs = 0.975)
+detected_c_l <- 0.5 * quantile(c_filter$Positive, probs = 0.025)
 detected_c <- 0.5 * mean(c_filter$Positive)
+detected_c_h <- 0.5 * quantile(c_filter$Positive, probs = 0.975)
+detected_d_l <- 0.5 * quantile(d_filter$Positive, probs = 0.025)
 detected_d <- 0.5 * mean(d_filter$Positive)
+detected_d_h <- 0.5 * quantile(d_filter$Positive, probs = 0.975)
+detected_e_l <- 0.5 * quantile(e_filter$Positive, probs = 0.025)
 detected_e <- 0.5 * mean(e_filter$Positive)
+detected_e_h <- 0.5 * quantile(e_filter$Positive, probs = 0.975)
 
+rate_a_l <- quantile(a_filter$Positive/a_filter$total_active_cases, probs = 0.025)
 rate_a <- mean(a_filter$Positive/a_filter$total_active_cases)
+rate_a_h <- quantile(a_filter$Positive/a_filter$total_active_cases, probs = 0.975)
+rate_b_l <- quantile(b_filter$Positive/b_filter$total_active_cases, probs = 0.025)
 rate_b <- mean(b_filter$Positive/b_filter$total_active_cases)
+rate_b_h <- quantile(b_filter$Positive/b_filter$total_active_cases, probs = 0.975)
+rate_c_l <- quantile(c_filter$Positive/c_filter$total_active_cases, probs = 0.025)
 rate_c <- mean(c_filter$Positive/c_filter$total_active_cases)
+rate_c_h <- quantile(c_filter$Positive/c_filter$total_active_cases, probs = 0.975)
+rate_d_l <- quantile(d_filter$Positive/d_filter$total_active_cases, probs = 0.025)
 rate_d <- mean(d_filter$Positive/d_filter$total_active_cases)
+rate_d_h <- quantile(d_filter$Positive/d_filter$total_active_cases, probs = 0.975)
+rate_e_l <- quantile(e_filter$Positive/e_filter$total_active_cases, probs = 0.025)
 rate_e <- mean(e_filter$Positive/e_filter$total_active_cases)
+rate_e_h <- quantile(e_filter$Positive/e_filter$total_active_cases, probs = 0.975)
+
+
 
 k <- data.frame(
-"Scenario" = c("latentTB", "activeTB", "Deaths", "Peak_time", "cases100k", "detected100k", "case_detection_rate", "R0", "total_time_infectious", "total_time_active", "mean_time_infectious", "mean_time_active"),
-"standard" = c(mean(a_f$agents_ever_latent), mean(a_f$agents_ever_active), mean(a_f$Dead), mean(a_f$Peak_time), cases_a, detected_a, rate_a, mean(a_f$R0), mean(a_f$total_time_infectious), mean(a_f$total_time_active), mean(a_f$mean_time_infectious), mean(a_f$mean_time_active)),
-"cti" = c(mean(b_f$agents_ever_latent), mean(b_f$agents_ever_active), mean(b_f$Dead), mean(b_f$Peak_time), cases_b, detected_b, rate_b, mean(b_f$R0), mean(b_f$total_time_infectious), mean(b_f$total_time_active), mean(b_f$mean_time_infectious), mean(b_f$mean_time_active)),
-"x_ray" = c(mean(c_f$agents_ever_latent), mean(c_f$agents_ever_active), mean(c_f$Dead), mean(c_f$Peak_time), cases_c, detected_c, rate_c, mean(c_f$R0), mean(c_f$total_time_infectious), mean(c_f$total_time_active), mean(c_f$mean_time_infectious), mean(c_f$mean_time_active)),
-"tut" = c(mean(d_f$agents_ever_latent), mean(d_f$agents_ever_active), mean(d_f$Dead), mean(d_f$Peak_time), cases_d, detected_d, rate_d, mean(d_f$R0), mean(d_f$total_time_infectious), mean(d_f$total_time_active), mean(d_f$mean_time_infectious), mean(d_f$mean_time_active)),
-"ultra" = c(mean(e_f$agents_ever_latent), mean(e_f$agents_ever_active), mean(e_f$Dead), mean(e_f$Peak_time), cases_e, detected_e, rate_e, mean(e_f$R0), mean(e_f$total_time_infectious), mean(e_f$total_time_active), mean(e_f$mean_time_infectious), mean(e_f$mean_time_active)))
+"Scenario" = c("latentTBLow", "latentTB", "latentTBHigh", "activeTBLow", "activeTB", "activeTBHigh", "DeathsLow", "Deaths", "DeathsHigh", "Peak_timeLow", "Peak_time", "Peak_timeHigh", "cases100kLow", "cases100k", "cases100kHigh", "detected100kLow", "detected100k", "detected100kHigh", "case_detection_rateLow", "case_detection_rate", "case_detection_rateHigh", "R0", "total_time_infectious", "total_time_active", "mean_time_infectiousLow", "mean_time_infectious", "mean_time_infectiousHigh", "mean_time_activeLow", "mean_time_active", "mean_time_activeHigh"),
+"standard" = c(
+quantile(a_f$agents_ever_latent, probs = 0.025), mean(a_f$agents_ever_latent), quantile(a_f$agents_ever_latent, probs = 0.975), quantile(a_f$agents_ever_active, probs = 0.025), mean(a_f$agents_ever_active), quantile(a_f$agents_ever_active, probs = 0.975), 
+quantile(a_f$Dead, probs = 0.025), mean(a_f$Dead), quantile(a_f$Dead, probs = 0.975), 
+quantile(a_f$Peak_time, probs = 0.025),mean(a_f$Peak_time), quantile(a_f$Peak_time, probs = 0.975),
+cases_a_l, cases_a, cases_a_h, 
+detected_a_l, detected_a, detected_a_h, 
+rate_a_l, rate_a, rate_a_h, 
+mean(a_f$R0), mean(a_f$total_time_infectious), mean(a_f$total_time_active), 
+quantile(a_f$mean_time_infectious, probs = 0.025), mean(a_f$mean_time_infectious), quantile(a_f$mean_time_infectious, probs = 0.975),
+quantile(a_f$mean_time_active, probs = 0.025), mean(a_f$mean_time_active), quantile(a_f$mean_time_active, probs = 0.975)),
+"cti" = c(
+quantile(b_f$agents_ever_latent, probs = 0.025), mean(b_f$agents_ever_latent), quantile(b_f$agents_ever_latent, probs = 0.975), quantile(b_f$agents_ever_active, probs = 0.025), mean(b_f$agents_ever_active), quantile(b_f$agents_ever_active, probs = 0.975), 
+quantile(b_f$Dead, probs = 0.025), mean(b_f$Dead), quantile(b_f$Dead, probs = 0.975), 
+quantile(b_f$Peak_time, probs = 0.025),mean(b_f$Peak_time), quantile(b_f$Peak_time, probs = 0.975),
+cases_b_l, cases_b, cases_b_h, 
+detected_b_l, detected_b, detected_b_h, 
+rate_b_l, rate_b, rate_b_h, 
+mean(b_f$R0), mean(b_f$total_time_infectious), mean(b_f$total_time_active), 
+quantile(b_f$mean_time_infectious, probs = 0.025), mean(b_f$mean_time_infectious), quantile(b_f$mean_time_infectious, probs = 0.975),
+quantile(b_f$mean_time_active, probs = 0.025), mean(b_f$mean_time_active), quantile(b_f$mean_time_active, probs = 0.975)),
+"x_ray" = c(
+quantile(c_f$agents_ever_latent, probs = 0.025), mean(c_f$agents_ever_latent), quantile(c_f$agents_ever_latent, probs = 0.975), 
+quantile(c_f$agents_ever_active, probs = 0.025), mean(c_f$agents_ever_active), quantile(c_f$agents_ever_active, probs = 0.975), 
+quantile(c_f$Dead, probs = 0.025), mean(c_f$Dead), quantile(c_f$Dead, probs = 0.975), 
+quantile(c_f$Peak_time, probs = 0.025),mean(c_f$Peak_time), quantile(c_f$Peak_time, probs = 0.975),
+cases_c_l, cases_c, cases_c_h, 
+detected_c_l, detected_c, detected_c_h, 
+rate_c_l, rate_c, rate_c_h, 
+mean(c_f$R0), mean(c_f$total_time_infectious), mean(c_f$total_time_active), 
+quantile(c_f$mean_time_infectious, probs = 0.025), mean(c_f$mean_time_infectious), quantile(c_f$mean_time_infectious, probs = 0.975),
+quantile(c_f$mean_time_active, probs = 0.025), mean(c_f$mean_time_active), quantile(c_f$mean_time_active, probs = 0.975)),
+"tut" = c(
+quantile(d_f$agents_ever_latent, probs = 0.025), mean(d_f$agents_ever_latent), quantile(d_f$agents_ever_latent, probs = 0.975), quantile(d_f$agents_ever_active, probs = 0.025), mean(d_f$agents_ever_active), quantile(d_f$agents_ever_active, probs = 0.975), 
+quantile(d_f$Dead, probs = 0.025), mean(d_f$Dead), quantile(d_f$Dead, probs = 0.975), 
+quantile(d_f$Peak_time, probs = 0.025),mean(d_f$Peak_time), quantile(d_f$Peak_time, probs = 0.975),
+cases_d_l, cases_d, cases_d_h, 
+detected_d_l, detected_d, detected_d_h, 
+rate_d_l, rate_d, rate_d_h, 
+mean(d_f$R0), mean(d_f$total_time_infectious), mean(d_f$total_time_active), 
+quantile(d_f$mean_time_infectious, probs = 0.025), mean(d_f$mean_time_infectious), quantile(d_f$mean_time_infectious, probs = 0.975),
+quantile(d_f$mean_time_active, probs = 0.025), mean(d_f$mean_time_active), quantile(d_f$mean_time_active, probs = 0.975)),
+"ultra" = c(
+quantile(e_f$agents_ever_latent, probs = 0.025), mean(e_f$agents_ever_latent), quantile(e_f$agents_ever_latent, probs = 0.975), 
+quantile(e_f$agents_ever_active, probs = 0.025), mean(e_f$agents_ever_active), quantile(e_f$agents_ever_active, probs = 0.975), 
+quantile(e_f$Dead, probs = 0.025), mean(e_f$Dead), quantile(e_f$Dead, probs = 0.975), 
+quantile(e_f$Peak_time, probs = 0.025),mean(e_f$Peak_time), quantile(e_f$Peak_time, probs = 0.975),
+cases_e_l, cases_e, cases_e_h, 
+detected_e_l, detected_e, detected_e_h, 
+rate_e_l, rate_e, rate_e_h, 
+mean(e_f$R0), mean(e_f$total_time_infectious), mean(e_f$total_time_active), 
+quantile(e_f$mean_time_infectious, probs = 0.025), mean(e_f$mean_time_infectious), quantile(e_f$mean_time_infectious, probs = 0.975),
+quantile(e_f$mean_time_active, probs = 0.025), mean(e_f$mean_time_active), quantile(e_f$mean_time_active, probs = 0.975)))
+
+
 k$ctiDstd <- k$cti / k$standard
 k$xrayDstd <- k$x_ray / k$standard
 k$tutDstd <- k$tut / k$standard
