@@ -75,7 +75,85 @@ k <- data.frame(
 "Tests_cti_no_test" = c(mean(t2n$Tests), mean(t3n$Tests), mean(t4n$Tests), mean(t5n$Tests), mean(t6n$Tests), mean(t7n$Tests), mean(t8n$Tests), mean(t9n$Tests), mean(t10n$Tests), mean(t11n$Tests)))
 htmlTable(k)
 write.csv2(k, file="abm_spaces_ultra_compare_output.csv")
+
+NCTI_inf_2_l <- quantile(t2x$Infections, probs =0.025)
+NCTI_inf_2_h <- quantile(t2x$Infections, probs =0.975)
+CTIW_inf_2_l <- quantile(t2$Infections, probs =0.025)
+CTIW_inf_2_h <- quantile(t2$Infections, probs =0.975)
+CTIN_inf_2_l <- quantile(t2n$Infections, probs =0.025)
+CTIN_inf_2_h <- quantile(t2n$Infections, probs =0.975)
+
+NCTI_inf_8_l <- quantile(t8x$Infections, probs =0.025)
+NCTI_inf_8_h <- quantile(t8x$Infections, probs =0.975)
+CTIW_inf_8_l <- quantile(t8$Infections, probs =0.025)
+CTIW_inf_8_h <- quantile(t8$Infections, probs =0.975)
+CTIN_inf_8_l <- quantile(t8n$Infections, probs =0.025)
+CTIN_inf_8_h <- quantile(t8n$Infections, probs =0.975)
+
+NCTI_dead_2_l <- quantile(t2x$Dead, probs =0.025)
+NCTI_dead_2_h <- quantile(t2x$Dead, probs =0.975)
+CTIW_dead_2_l <- quantile(t2$Dead, probs =0.025)
+CTIW_dead_2_h <- quantile(t2$Dead, probs =0.975)
+CTIN_dead_2_l <- quantile(t2n$Dead, probs =0.025)
+CTIN_dead_2_h <- quantile(t2n$Dead, probs =0.975)
+
+NCTI_dead_8_l <- quantile(t8x$Dead, probs =0.025)
+NCTI_dead_8_h <- quantile(t8x$Dead, probs =0.975)
+CTIW_dead_8_l <- quantile(t8$Dead, probs =0.025)
+CTIW_dead_8_h <- quantile(t8$Dead, probs =0.975)
+CTIN_dead_8_l <- quantile(t8n$Dead, probs =0.025)
+CTIN_dead_8_h <- quantile(t8n$Dead, probs =0.975)
+
+NCTI_test_2_l <- quantile(t2x$Tests, probs =0.025)
+NCTI_test_2_h <- quantile(t2x$Tests, probs =0.975)
+CTIW_test_2_l <- quantile(t2$Tests, probs =0.025)
+CTIW_test_2_h <- quantile(t2$Tests, probs =0.975)
+CTIN_test_2_l <- quantile(t2n$Tests, probs =0.025)
+CTIN_test_2_h <- quantile(t2n$Tests, probs =0.975)
+
 ```
+
+# Some important 95% uncertainty ranges
+
+Infections and TAT = 2:
+
+No CTI `r NCTI_inf_2_l` `r NCTI_inf_2_h`
+
+CTI with testing `r CTIW_inf_2_l` `r CTIW_inf_2_h`
+
+CTI without testing `r CTIN_inf_2_l` `r CTIN_inf_2_h`
+
+Deaths and TAT = 2:
+
+No CTI `r NCTI_dead_2_l` `r NCTI_dead_2_h`
+
+CTI with testing `r CTIW_dead_2_l` `r CTIW_dead_2_h`
+
+CTI without testing `r CTIN_dead_2_l` `r CTIN_dead_2_h`
+
+Number of tests and TAT = 2:
+
+No CTI `r NCTI_test_2_l` `r NCTI_test_2_h`
+
+CTI with testing `r CTIW_test_2_l` `r CTIW_test_2_h`
+
+CTI without testing `r CTIN_test_2_l` `r CTIN_test_2_h`
+
+Infections and TAT = 8:
+
+No CTI `r NCTI_inf_8_l` `r NCTI_inf_8_h`
+
+CTI with testing `r CTIW_inf_8_l` `r CTIW_inf_8_h`
+
+CTI without testing `r CTIN_inf_8_l` `r CTIN_inf_8_h`
+
+Deaths and TAT = 8:
+
+No CTI `r NCTI_dead_8_l` `r NCTI_dead_8_h`
+
+CTI with testing `r CTIW_dead_8_l` `r CTIW_dead_8_h`
+
+CTI without testing `r CTIN_dead_8_l` `r CTIN_dead_8_h`
 
 # Plots
 
