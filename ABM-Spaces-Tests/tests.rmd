@@ -154,6 +154,163 @@ a <- data.frame("Weeks" = c(4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52),
 htmlTable(a)
 ```
 
+Some key uncertainty ranges
+
+```{R uncertainty, echo = FALSE}
+a4activeL <- quantile(a4$agents_ever_active, probs =0.025)
+a4activeH <- quantile(a4$agents_ever_active, probs =0.975)
+a4deadL <- quantile(a4$Dead, probs =0.025)
+a4deadH <- quantile(a4$Dead, probs =0.975)
+a4timeinfectL <- quantile(a4$mean_time_infectious, probs =0.025)
+a4timeinfectH <- quantile(a4$mean_time_infectious, probs =0.975)
+a4timeactiveL <- quantile(a4$mean_time_active, probs =0.025)
+a4timeactiveH <- quantile(a4$mean_time_active, probs =0.975)
+
+a4s1activeL <- quantile(a4s1$agents_ever_active, probs =0.025)
+a4s1activeH <- quantile(a4s1$agents_ever_active, probs =0.975)
+a4s1deadL <- quantile(a4s1$Dead, probs =0.025)
+a4s1deadH <- quantile(a4s1$Dead, probs =0.975)
+a4s1timeinfectL <- quantile(a4s1$mean_time_infectious, probs =0.025)
+a4s1timeinfectH <- quantile(a4s1$mean_time_infectious, probs =0.975)
+a4s1timeactiveL <- quantile(a4s1$mean_time_active, probs =0.025)
+a4s1timeactiveH <- quantile(a4s1$mean_time_active, probs =0.975)
+
+a52activeL <- quantile(a52$agents_ever_active, probs =0.025)
+a52activeH <- quantile(a52$agents_ever_active, probs =0.975)
+a52deadL <- quantile(a52$Dead, probs =0.025)
+a52deadH <- quantile(a52$Dead, probs =0.975)
+a52timeinfectL <- quantile(a52$mean_time_infectious, probs =0.025)
+a52timeinfectH <- quantile(a52$mean_time_infectious, probs =0.975)
+a52timeactiveL <- quantile(a52$mean_time_active, probs =0.025)
+a52timeactiveH <- quantile(a52$mean_time_active, probs =0.975)
+
+a52s1activeL <- quantile(a52s1$agents_ever_active, probs =0.025)
+a52s1activeH <- quantile(a52s1$agents_ever_active, probs =0.975)
+a52s1deadL <- quantile(a52s1$Dead, probs =0.025)
+a52s1deadH <- quantile(a52s1$Dead, probs =0.975)
+a52s1timeinfectL <- quantile(a52s1$mean_time_infectious, probs =0.025)
+a52s1timeinfectH <- quantile(a52s1$mean_time_infectious, probs =0.975)
+a52s1timeactiveL <- quantile(a52s1$mean_time_active, probs =0.025)
+a52s1timeactiveH <- quantile(a52s1$mean_time_active, probs =0.975)
+
+a4s8activeL <- quantile(a4s8$agents_ever_active, probs =0.025)
+a4s8activeH <- quantile(a4s8$agents_ever_active, probs =0.975)
+a4s8deadL <- quantile(a4s8$Dead, probs =0.025)
+a4s8deadH <- quantile(a4s8$Dead, probs =0.975)
+a4s8timeinfectL <- quantile(a4s8$mean_time_infectious, probs =0.025)
+a4s8timeinfectH <- quantile(a4s8$mean_time_infectious, probs =0.975)
+a4s8timeactiveL <- quantile(a4s8$mean_time_active, probs =0.025)
+a4s8timeactiveH <- quantile(a4s8$mean_time_active, probs =0.975)
+
+a4s9activeL <- quantile(a4s9$agents_ever_active, probs =0.025)
+a4s9activeH <- quantile(a4s9$agents_ever_active, probs =0.975)
+a4s9deadL <- quantile(a4s9$Dead, probs =0.025)
+a4s9deadH <- quantile(a4s9$Dead, probs =0.975)
+a4s9timeinfectL <- quantile(a4s9$mean_time_infectious, probs =0.025)
+a4s9timeinfectH <- quantile(a4s9$mean_time_infectious, probs =0.975)
+a4s9timeactiveL <- quantile(a4s9$mean_time_active, probs =0.025)
+a4s9timeactiveH <- quantile(a4s9$mean_time_active, probs =0.975)
+
+a52s8activeL <- quantile(a52s8$agents_ever_active, probs =0.025)
+a52s8activeH <- quantile(a52s8$agents_ever_active, probs =0.975)
+a52s8deadL <- quantile(a52s8$Dead, probs =0.025)
+a52s8deadH <- quantile(a52s8$Dead, probs =0.975)
+a52s8timeinfectL <- quantile(a52s8$mean_time_infectious, probs =0.025)
+a52s8timeinfectH <- quantile(a52s8$mean_time_infectious, probs =0.975)
+a52s8timeactiveL <- quantile(a52s8$mean_time_active, probs =0.025)
+a52s8timeactiveH <- quantile(a52s8$mean_time_active, probs =0.975)
+
+a52s9activeL <- quantile(a52s9$agents_ever_active, probs =0.025)
+a52s9activeH <- quantile(a52s9$agents_ever_active, probs =0.975)
+a52s9deadL <- quantile(a52s9$Dead, probs =0.025)
+a52s9deadH <- quantile(a52s9$Dead, probs =0.975)
+a52s9timeinfectL <- quantile(a52s9$mean_time_infectious, probs =0.025)
+a52s9timeinfectH <- quantile(a52s9$mean_time_infectious, probs =0.975)
+a52s9timeactiveL <- quantile(a52s9$mean_time_active, probs =0.025)
+a52s9timeactiveH <- quantile(a52s9$mean_time_active, probs =0.975)
+```
+
+4-weekly with 70% sensitivity
+
+Cases: `r a4activeL` `r a4activeH`
+
+Deaths: `r a4deadL` `r a4deadH`
+
+Time infectious: `r a4timeinfectL` `r a4timeinfectH` 
+
+Time active: `r a4timeactiveL` `r a4timeactiveH`
+
+4-weekly with 80% sensitivity
+
+Cases: `r a4s8activeL` `r a4s8activeH`
+
+Deaths: `r a4s8deadL` `r a4s8deadH`
+
+Time infectious: `r a4s8timeinfectL` `r a4s8timeinfectH` 
+
+Time active: `r a4s8timeactiveL` `r a4s8timeactiveH`
+
+4-weekly with 90% sensitivity
+
+Cases: `r a4s9activeL` `r a4s9activeH`
+
+Deaths: `r a4s9deadL` `r a4s9deadH`
+
+Time infectious: `r a4s9timeinfectL` `r a4s9timeinfectH` 
+
+Time active: `r a4s9timeactiveL` `r a4s9timeactiveH`
+
+4-weekly with 100% sensitivity
+
+Cases: `r a4s1activeL` `r a4s1activeH`
+
+Deaths: `r a4s1deadL` `r a4s1deadH`
+
+Time infectious: `r a4s1timeinfectL` `r a4s1timeinfectH` 
+
+Time active: `r a4s1timeactiveL` `r a4s1timeactiveH`
+
+52-weekly with 70% sensitivity
+
+Cases: `r a52activeL` `r a52activeH`
+
+Deaths: `r a52deadL` `r a52deadH`
+
+Time infectious: `r a52timeinfectL` `r a52timeinfectH` 
+
+Time active: `r a52timeactiveL` `r a52timeactiveH`
+
+52-weekly with 80% sensitivity
+
+Cases: `r a52s8activeL` `r a52s8activeH`
+
+Deaths: `r a52s8deadL` `r a52s8deadH`
+
+Time infectious: `r a52s8timeinfectL` `r a52s8timeinfectH` 
+
+Time active: `r a52s8timeactiveL` `r a52s8timeactiveH`
+
+52-weekly with 90% sensitivity
+
+Cases: `r a52s9activeL` `r a52s9activeH`
+
+Deaths: `r a52s9deadL` `r a52s9deadH`
+
+Time infectious: `r a52s9timeinfectL` `r a52s9timeinfectH` 
+
+Time active: `r a52s9timeactiveL` `r a52s9timeactiveH`
+
+52-weekly with 100% sensitivity
+
+Cases: `r a52s1activeL` `r a52s1activeH`
+
+Deaths: `r a52s1deadL` `r a52s1deadH`
+
+Time infectious: `r a52s1timeinfectL` `r a52s1timeinfectH` 
+
+Time active: `r a52s1timeactiveL` `r a52s1timeactiveH`
+
+
 And some graphs. First infections 
 
 ```{R Infections_curves, echo = FALSE}
